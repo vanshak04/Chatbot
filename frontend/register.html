@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TerraLeap Registration</title>
+
+  <style>
+    body {
+      font-family: Arial;
+      background: #f5f7fb;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .card {
+      background: white;
+      width: 400px;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #2c7be5;
+    }
+
+    .field {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: #2c7be5;
+      border: none;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 15px;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      opacity: 0.95;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h2>Complete Registration 🚀</h2>
+
+  <div class="field">
+    <label>First Name</label>
+    <input id="first_name" />
+  </div>
+
+  <div class="field">
+    <label>Last Name</label>
+    <input id="last_name" />
+  </div>
+
+  <div class="field">
+    <label>Country</label>
+    <input id="country" />
+  </div>
+
+  <div class="field">
+    <label>Mobile Number</label>
+    <input id="mobile" />
+  </div>
+
+  <div class="field">
+    <label>Email</label>
+    <input id="email" />
+  </div>
+
+  <button id="continueBtn">
+    Continue to TerraLeap
+  </button>
+
+</div>
+
+<script>
+
+const API = "http://127.0.0.1:8000";
+
+// GET SESSION ID FROM URL
+const params = new URLSearchParams(window.location.search);
+
+const sessionId = params.get("session");
+
+// FETCH REGISTRATION DATA
+async function loadRegistration() {
+
+  if (!sessionId) return;
+
+  const res = await fetch(
+    API + "/registration/" + sessionId
+  );
+
+  const data = await res.json();
+
+  console.log(data);
+
+  // AUTO-FILL FIELDS
+  document.getElementById("first_name").value =
+    data.first_name || "";
+
+  document.getElementById("last_name").value =
+    data.last_name || "";
+
+  document.getElementById("country").value =
+    data.country || "";
+
+  document.getElementById("mobile").value =
+    data.mobile || "";
+
+  document.getElementById("email").value =
+    data.email || "";
+}
+
+loadRegistration();
+
+
+// CONTINUE BUTTON
+document.getElementById("continueBtn").onclick = () => {
+
+  // later we can POST to DB / TerraLeap API
+
+  window.location.href =
+    "https://www.terraleap.com/verify/registration.aspx";
+};
+
+</script>
+
+</body>
+</html>
